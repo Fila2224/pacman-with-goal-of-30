@@ -1,0 +1,114 @@
+[gd_scene load_steps=17 format=3 uid="uid://b75cj1tjuh6yc"]
+
+[ext_resource type="Script" uid="uid://dw0m3v1q47h5w" path="res://scripts/character_body_2d.gd" id="1_4vejd"]
+[ext_resource type="Texture2D" uid="uid://blhaqrkiohgk4" path="res://pacman-art/pacman-right/1.png" id="1_dn4c7"]
+[ext_resource type="Texture2D" uid="uid://cn4pqwywwdtnu" path="res://pacman-art/pacman-right/2.png" id="2_4vejd"]
+[ext_resource type="Texture2D" uid="uid://b8bkmf5c885lt" path="res://pacman-art/pacman-down/1.png" id="2_x5gf8"]
+[ext_resource type="Texture2D" uid="uid://bnctc2jtghgyv" path="res://pacman-art/pacman-down/2.png" id="3_42hdn"]
+[ext_resource type="Texture2D" uid="uid://bmd7yjyagugu4" path="res://pacman-art/pacman-right/3.png" id="3_ws0vm"]
+[ext_resource type="Texture2D" uid="uid://dcgua6rq36fn0" path="res://pacman-art/pacman-down/3.png" id="4_el37e"]
+[ext_resource type="Texture2D" uid="uid://cg2mfikddx1nj" path="res://pacman-art/pacman-left/1.png" id="5_inrnk"]
+[ext_resource type="Texture2D" uid="uid://blqmy1deie1pl" path="res://pacman-art/pacman-left/2.png" id="6_wqsd8"]
+[ext_resource type="Texture2D" uid="uid://d228vj61oi8l2" path="res://pacman-art/pacman-left/3.png" id="7_ugk0l"]
+[ext_resource type="Texture2D" uid="uid://7cinwgf7ihii" path="res://pacman-art/pacman-up/1.png" id="11_eewtm"]
+[ext_resource type="Texture2D" uid="uid://15e0oupa0rh8" path="res://pacman-art/pacman-up/2.png" id="12_o6j3l"]
+[ext_resource type="Texture2D" uid="uid://ckptufyverkx2" path="res://pacman-art/pacman-up/3.png" id="13_diyyd"]
+[ext_resource type="Script" uid="uid://b4j7mktchwln1" path="res://scripts/pacmanborder.gd" id="14_42hdn"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rhr3r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_x5gf8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_42hdn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_el37e")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_inrnk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_wqsd8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ugk0l")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dn4c7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4vejd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ws0vm")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_eewtm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_o6j3l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_diyyd")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x5gf8"]
+radius = 8.0
+
+[node name="pacman" type="CharacterBody2D" groups=["pacman"]]
+script = ExtResource("1_4vejd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 1)
+sprite_frames = SubResource("SpriteFrames_rhr3r")
+animation = &"up"
+
+[node name="raycastup" type="RayCast2D" parent="."]
+target_position = Vector2(0, -9)
+
+[node name="raycastright" type="RayCast2D" parent="."]
+target_position = Vector2(9, 0)
+
+[node name="raycastdown" type="RayCast2D" parent="."]
+target_position = Vector2(0, 12)
+
+[node name="raycastleft" type="RayCast2D" parent="."]
+target_position = Vector2(-9, 0)
+
+[node name="pacmanborder" type="Area2D" parent="."]
+script = ExtResource("14_42hdn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pacmanborder"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_x5gf8")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+
+[connection signal="area_entered" from="pacmanborder" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="pacmanborder" to="." method="_on_pacmanborder_area_entered"]
+[connection signal="area_entered" from="pacmanborder" to="pacmanborder" method="_on_area_entered"]
+[connection signal="body_entered" from="pacmanborder" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

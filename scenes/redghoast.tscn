@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://b03dprjw5q3sl"]
+
+[ext_resource type="Script" uid="uid://bp74q0spo8ard" path="res://scripts/redghoast.gd" id="1_ilpkb"]
+[ext_resource type="Texture2D" uid="uid://dmx8dwqh5hndl" path="res://pacman-art/ghosts/blinky.png" id="2_i2w3n"]
+[ext_resource type="Script" uid="uid://cgy2eur75uuo8" path="res://scripts/ghastborder.gd" id="3_i2w3n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kkmke"]
+radius = 7.28011
+
+[node name="redghoast" type="Node2D"]
+script = ExtResource("1_ilpkb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_i2w3n")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("3_i2w3n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_kkmke")
+
+[node name="raycastdown" type="RayCast2D" parent="."]
+scale = Vector2(5, 5)
+collide_with_areas = true
+
+[node name="raycastup" type="RayCast2D" parent="."]
+scale = Vector2(5, 5)
+target_position = Vector2(43, 0)
+collide_with_areas = true
+
+[node name="raycastright" type="RayCast2D" parent="."]
+scale = Vector2(5, 5)
+target_position = Vector2(0, -55)
+collide_with_areas = true
+
+[node name="raycastleft" type="RayCast2D" parent="."]
+scale = Vector2(5, 5)
+target_position = Vector2(-73, 0)
+collide_with_areas = true
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

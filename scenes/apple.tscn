@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx6dho2e8cvjr"]
+
+[ext_resource type="Script" uid="uid://b6xjn7o6urmst" path="res://scenes/apple.gd" id="1_7vr8k"]
+[ext_resource type="Texture2D" uid="uid://b0k52e1tvii8h" path="res://pacman-art/other/apple.png" id="1_h071m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7vr8k"]
+radius = 9.0
+
+[node name="apple" type="Area2D"]
+script = ExtResource("1_7vr8k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 1)
+scale = Vector2(30, 30)
+texture = ExtResource("1_h071m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(25, 25)
+shape = SubResource("CircleShape2D_7vr8k")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
